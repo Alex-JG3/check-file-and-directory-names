@@ -1,0 +1,11 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "check-file-and-directory-names"
+version = "0.0.1"
+authors = [
+    { name = "Alex Gregory" }
+]
+description = "A pre-commit hook for checking file and directory names"
