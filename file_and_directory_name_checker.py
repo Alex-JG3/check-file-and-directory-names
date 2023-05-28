@@ -24,13 +24,16 @@ def get_paths_with_uppercase_in_dirname(paths):
             paths_with_uppercase_in_dirname.append(path)
     return paths_with_uppercase_in_dirname
 
-
-if __name__ == "__main__":
+def main():
     added_filepaths = get_added_filepaths()
     upper_case_filepaths = get_paths_with_uppercase_in_filename(added_filepaths)
     upper_case_dirpaths = get_paths_with_uppercase_in_dirname(added_filepaths)  
     ret = 0
     if (len(upper_case_filepaths) != 0) or (len(upper_case_dirpaths) != 0):
         ret = 1
+    return ret
+
+if __name__ == "__main__":
+    ret = main()
     raise SystemExit(ret)
 
