@@ -3,7 +3,7 @@ requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "check-file-and-directory-names"
+name = "check_file_and_directory_names"
 version = "0.0.1"
 authors = [
     { name = "Alex Gregory" }
