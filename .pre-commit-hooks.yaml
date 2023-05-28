@@ -1,6 +1,6 @@
 -   id: check-file-and-directory-names
     name: Check file names and directory names
     description: Check directory and file names are consistent
-    entry: python3 file_and_directory_name_checker.py
+    entry: python3 check-file-and-directory-names/main.py
     language: python
     types: [file]
