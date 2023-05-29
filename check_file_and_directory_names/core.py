@@ -1,6 +1,27 @@
 import subprocess
 from pathlib import Path
+from collections import UserDict
 
+
+class FileTree(UserDict):
+    def __init__(self):
+        super(FileTree, self).__init__()
+        self.files = []
+
+    def add_path_to_tree(self, path: Path, is_file_path: bool):
+        if is_file_path:
+            self.add_parts_to_tree(path.parts[:-1], path.parts[-1])
+        else:
+            self.add_parts_to_tree(path.parts)
+
+    def add_parts_to_tree(self, dir_parts, file_part=None):
+        if len(dir_parts) == 0:
+            if file_part is not None:
+                self.files.append(file_part)
+        else:
+            if dir_parts[0] not in self:
+                self.__setitem__(dir_parts[0], FileTree())
+            self.__getitem__(dir_parts[0]).add_parts_to_tree(dir_parts[1:], file_part)
 
 def get_added_filepaths():
     added_filepaths = subprocess.run(
