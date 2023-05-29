@@ -40,8 +40,8 @@ def create_directory_tree(paths):
     directory_tree = {}
     for path in paths:
         if path.is_file():
-            add_path_parts_to_directory_tree(path.parent.parts, directory_tree)
-        else:
+            path = path.parent
+        if path.parts != ():
             add_path_parts_to_directory_tree(path.parts, directory_tree)
     return directory_tree
 
