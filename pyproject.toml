@@ -9,3 +9,9 @@ authors = [
     { name = "Alex Gregory" }
 ]
 description = "A pre-commit hook for checking file and directory names"
+dependencies = []
+
+[project.optional-dependencies]
+test = [
+    "pytest"
+]
