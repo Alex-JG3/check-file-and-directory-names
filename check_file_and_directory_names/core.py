@@ -23,6 +23,31 @@ class FileTree(UserDict):
                 self.__setitem__(dir_parts[0], FileTree())
             self.__getitem__(dir_parts[0]).add_parts_to_tree(dir_parts[1:], file_part)
 
+    def iterate_over_directory_names(self,  filter_func=None, parent_parts=None):
+        if parent_parts is None:
+            parent_parts = []
+        for dir_name, subtree in self.items():
+            yield from subtree.iterate_over_directory_names(
+                filter_func, parent_parts + [dir_name]
+            )
+            if filter_func is None:
+                yield dir_name, parent_parts
+            elif filter_func(dir_name):
+                yield dir_name, parent_parts
+
+    def iterate_over_file_names(self, filter_func=None, parent_parts=None):
+        if parent_parts is None:
+            parent_parts = []
+        for dir_name, subtree in self.items():
+            yield from subtree.iterate_over_file_names(
+                filter_func, parent_parts + [dir_name]
+            )
+        for filename in self.files:
+            if filter_func is None:
+                yield filename, parent_parts
+            elif filter_func(filename):
+                yield filename, parent_parts
+
 def get_added_filepaths():
     added_filepaths = subprocess.run(
         ['git', '--no-pager', 'diff', '--cached', '--name-only', '--diff-filter=A'],
