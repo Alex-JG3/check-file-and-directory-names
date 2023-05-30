@@ -18,6 +18,14 @@ def git_repo_path(tmpdir_factory):
     subprocess.run(["git", "add", "."])
     return git_repo_path
 
+@pytest.fixture(scope="session")
+def file_tree():
+    file_tree = core.FileTree()
+    file_tree.add_path_to_tree(pathlib.Path("dir1") / "file1.py", is_file_path=True)
+    file_tree.add_path_to_tree(pathlib.Path("dir1") / "subdir1" / "file2.py", is_file_path=True)
+    file_tree.add_path_to_tree(pathlib.Path("dir1") / "subdir1" / "file1.py", is_file_path=True)
+    return file_tree
+
 def test_get_added_filepaths(git_repo_path):
     os.chdir(git_repo_path)
     added_filepaths = core.get_added_filepaths()
@@ -48,4 +56,22 @@ def test_check_for_dirnames_with_capitals():
         )
     )
     assert len(dirs_with_capitals) == 2
+
+def test_add_path_to_file_tree(file_tree):
+    assert file_tree["dir1"].files == ["file1.py"]
+    assert set(file_tree["dir1"]["subdir1"].files) == {"file1.py", "file2.py"}
+
+def test_iterate_over_directory_names(file_tree):
+    dir_names = set()
+    expected_dir_names = {"dir1", "subdir1"}
+    for dir_name, _ in file_tree.iterate_over_directory_names():
+        dir_names.add(dir_name)
+    assert dir_names == expected_dir_names
+
+def test_iterate_over_file_names(file_tree):
+    filenames = set()
+    expected_filenames = {"file1.py", "file2.py"}
+    for filename, _ in file_tree.iterate_over_file_names():
+        filenames.add(filename)
+    assert filenames == expected_filenames
 
