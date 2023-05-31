@@ -1,12 +1,16 @@
 from check_file_and_directory_names import core
 
 def main():
-    added_filepaths = core.get_added_filepaths()
-    upper_case_filepaths = core.get_paths_with_uppercase_in_filename(added_filepaths)
-    directory_tree = core.create_directory_tree(added_filepaths)
+    file_tree = core.FileTree()
+    for path in core.get_added_filepaths():
+        file_tree.add_path_to_tree(path, path.is_file())
     upper_case_dirpaths = list(
-        core.directory_name_iter(
-            directory_tree,
+        file_tree.iterate_over_directory_names(
+            filter_func=lambda dir_name: not dir_name.islower()  # type: ignore
+        )
+    )
+    upper_case_filepaths = list(
+        file_tree.iterate_over_file_names(
             filter_func=lambda dir_name: not dir_name.islower()  # type: ignore
         )
     )
