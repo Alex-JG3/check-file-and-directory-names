@@ -1,7 +1,13 @@
 import subprocess
 from pathlib import Path
 from collections import UserDict
+from abc import ABC, abstractmethod
 
+
+class Checker(ABC):
+    @abstractmethod
+    def check_name(self, name, parent_parts):
+        pass
 
 class FileTree(UserDict):
     def __init__(self):
