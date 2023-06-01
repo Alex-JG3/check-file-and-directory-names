@@ -2,6 +2,7 @@ import subprocess
 from pathlib import Path
 from collections import UserDict
 from abc import ABC, abstractmethod
+from typing import List, Tuple
 
 
 class Checker(ABC):
@@ -53,6 +54,23 @@ class FileTree(UserDict):
                 yield filename, parent_parts
             elif filter_func(filename):
                 yield filename, parent_parts
+
+    def run_checkers_over_tree(self, checkers: List):
+        for dir_name, parent_parts in self.iterate_over_directory_names():
+            for checker in checkers:
+                checker.check_name(dir_name, parent_parts)
+        for file_name, parent_parts in self.iterate_over_file_names():
+            for checker in checkers:
+                checker.check_name(file_name, parent_parts)
+
+class CapitalLetterChecker(Checker):
+    def __init__(self):
+        self.string_reference = "These files and directory names contain caputal letters."
+        self.flagged_paths = []
+
+    def check_name(self, name: str, parent_parts: Tuple[str]):
+        if not name.islower():
+            self.flagged_paths.append(Path(*parent_parts) / name)
 
 def get_added_filepaths():
     added_filepaths = subprocess.run(
