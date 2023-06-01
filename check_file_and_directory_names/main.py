@@ -4,19 +4,14 @@ def main():
     file_tree = core.FileTree()
     for path in core.get_added_filepaths():
         file_tree.add_path_to_tree(path, path.is_file())
-    upper_case_dirpaths = list(
-        file_tree.iterate_over_directory_names(
-            filter_func=lambda dir_name: not dir_name.islower()  # type: ignore
-        )
-    )
-    upper_case_filepaths = list(
-        file_tree.iterate_over_file_names(
-            filter_func=lambda dir_name: not dir_name.islower()  # type: ignore
-        )
-    )
+    checkers = [
+        core.CapitalLetterChecker()
+    ]
+    file_tree.run_checkers_over_tree(checkers)
     ret = 0
-    if (len(upper_case_filepaths) != 0) or (len(upper_case_dirpaths) != 0):
-        ret = 1
+    for checker in checkers:
+        if len(checker.flagged_paths) != 0:
+            ret = 1
     return ret
 
 if __name__ == "__main__":
