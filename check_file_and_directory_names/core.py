@@ -65,7 +65,7 @@ class FileTree(UserDict):
 
 class CapitalLetterChecker(Checker):
     def __init__(self):
-        self.string_reference = "These files and directory names contain caputal letters."
+        self.string_reference = "These file and directory names contain capital letters:"
         self.flagged_paths = []
 
     def check_name(self, name: str, parent_parts: Tuple[str]):
