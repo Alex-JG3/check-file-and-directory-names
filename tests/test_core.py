@@ -43,6 +43,24 @@ def test_create_directory_tree(git_repo_path):
     assert directory_tree.keys() == {"dir"}
     assert directory_tree["dir"] == {}
 
+def test_illegal_character_checker():
+    paths = [
+        pathlib.Path("dir1") / "fi-le1",
+        pathlib.Path("dir2") / "fi_le2",
+        pathlib.Path("dir2") / "subdir1" / "fil:e3",
+    ]
+    filetree = core.FileTree()
+    for p in paths:
+        filetree.add_path_to_tree(p, True)
+    illegal_char_checker = core.IllegalCharacterChecker({":", "-"})
+    filetree.run_checkers_over_tree([illegal_char_checker])
+
+    expected_paths = [
+        pathlib.Path("dir1") / "fi-le1",
+        pathlib.Path("dir2") / "subdir1" / "fil:e3",
+    ]
+    assert sorted(illegal_char_checker.flagged_paths) == sorted(expected_paths)
+
 def test_check_for_dirnames_with_capitals():
     paths = [
         pathlib.Path("dir1") / "file1",
