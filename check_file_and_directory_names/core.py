@@ -131,3 +131,13 @@ def directory_name_iter(directory_tree, parents=[], filter_func=lambda _: True):
             yield dir_name, parents
         if sub_tree != {}:
             yield from directory_name_iter(sub_tree, parents + [dir_name], filter_func)
+
+def print_output_from_checkers(checkers):
+    output = "\n"
+    for checker in checkers:
+        output += checker.string_reference + "\n"
+        checker.flagged_paths.sort()
+        if len(checker.flagged_paths) == 0:
+            continue
+        for path in checker.flagged_paths:
+            output += f" - {path}\n"
