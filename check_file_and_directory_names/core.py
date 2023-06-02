@@ -72,6 +72,16 @@ class CapitalLetterChecker(Checker):
         if not name.islower():
             self.flagged_paths.append(Path(*parent_parts) / name)
 
+class IllegalCharacterChecker(Checker):
+    def __init__(self, illegal_characters):
+        self.string_reference = "These files and directory names contain an illegal character:"
+        self.illegal_characters = illegal_characters
+        self.flagged_paths = []
+
+    def check_name(self, name: str, parent_parts: Tuple[str]):
+        if any(char in name for char in self.illegal_characters):
+            self.flagged_paths.append(Path(*parent_parts) / name)
+
 def get_added_filepaths():
     added_filepaths = subprocess.run(
         ['git', '--no-pager', 'diff', '--cached', '--name-only', '--diff-filter=A'],
