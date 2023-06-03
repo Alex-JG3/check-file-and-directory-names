@@ -1,0 +1,7 @@
+repos:
+-   repo: https://github.com/Alex-JG3/check-file-and-directory-names
+    rev: 0b99a2a621cdbd78cadf45fd0438f031af6885f2
+    hooks:
+    -   id: check-file-and-directory-names
+        args: [--no_capital_letters]
+        pass_filenames: false
