@@ -32,9 +32,13 @@ def git_repo_path_with_issues(tmpdir_factory):
 
 def test_main_no_issues(git_repo_path_no_issues):
     os.chdir(git_repo_path_no_issues)
-    assert main.main() == 0
+    parser = main.create_parser()
+    args = parser.parse_args(["--no_capital_letters", "--illegal_characters", "-"])
+    assert main.main(args) == 0
 
 def test_main_with_issues(git_repo_path_with_issues):
     os.chdir(git_repo_path_with_issues)
-    assert main.main() == 1
+    parser = main.create_parser()
+    args = parser.parse_args(["--no_capital_letters", "--illegal_characters", "-"])
+    assert main.main(args) == 1
 
