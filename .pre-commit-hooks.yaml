@@ -4,3 +4,5 @@
     entry: python3 check_file_and_directory_names/main.py
     language: python
     types: [file]
+    exclude: ^.*$
+    always_run: true
